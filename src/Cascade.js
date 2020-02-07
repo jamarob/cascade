@@ -1,3 +1,5 @@
+import FallingLetter from './FallingLetter'
+
 export default class Cascade {
 	constructor(el) {
 		this.el = el
@@ -20,20 +22,10 @@ export default class Cascade {
 	run() {
 		let counter = 0
 		const inner = () => {
-			if (this.hasMore()) {
-				counter++
-				counter % 60 || this.replaceNext()
-				this.falling.forEach((f, i) => {
-					const rect = f.getBoundingClientRect()
-					const top = rect.top
-					f.style.top = top + 1 + 'px'
-				})
-				window.requestAnimationFrame(inner)
-			} else {
-				console.log('cascade has finished')
-			}
+			counter++ % 60 || (this.hasMore() && this.replaceNext())
+			this.falling.forEach(f => f.move(1))
+			window.requestAnimationFrame(inner)
 		}
-		console.log('starting cascade')
 		inner()
 	}
 
@@ -46,20 +38,12 @@ export default class Cascade {
 		const letter = this.tokens[index]
 		const replacement = document.createElement('span')
 		replacement.innerHTML = '&nbsp;'
-		//replacement.style.backgroundColor = 'blue'
-		//		const replacement = '<span>&nbsp;</span>'
 		this.tokens[index] = replacement
-		//this.el.innerHTML = this.getHTML()
 		this.el.innerHTML = ''
 		this.el.append(...this.tokens)
-		const { left, top } = replacement.getBoundingClientRect()
-		const falling = document.createElement('div')
-		falling.className = 'falling'
-		falling.textContent = letter
-		falling.style.top = top + 'px'
-		falling.style.left = left + 'px'
-		document.body.appendChild(falling)
-		this.falling.push(falling)
+		const { left, top, height } = replacement.getBoundingClientRect()
+		const fallingLetter = new FallingLetter(letter, top, left, height)
+		this.falling.push(fallingLetter)
 	}
 
 	getHTML() {
