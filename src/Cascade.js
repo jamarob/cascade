@@ -3,11 +3,8 @@ import FallingLetter from './FallingLetter'
 export default class Cascade {
 	constructor(el) {
 		this.el = el
-		this.text = el.textContent.replace(/\s/gi, ' ')
-		this.tokens = [...this.text]
-		this.replaceable = this.tokens.reduce((acc, cur, index) => {
-			return cur == ' ' ? acc : [...acc, index]
-		}, [])
+		this.tokens = el.textContent.replace(/\s/gi, ' ').split('')
+		this.replaceable = this.tokens.reduce(this.nonWhitespaceIndex, [])
 		const length = this.replaceable.length
 		for (let i = 0; i < length; i++) {
 			const r1 = Math.floor(Math.random() * length)
@@ -17,6 +14,13 @@ export default class Cascade {
 			this.replaceable[r2] = temp
 		}
 		this.falling = []
+	}
+
+	nonWhitespaceIndex(list, char, index) {
+		if (char !== ' ') {
+			list.push(index)
+		}
+		return list
 	}
 
 	run() {
@@ -36,17 +40,22 @@ export default class Cascade {
 	replaceNext() {
 		const index = this.replaceable.pop()
 		const letter = this.tokens[index]
-		const replacement = document.createElement('span')
-		replacement.innerHTML = '&nbsp;'
+		const replacement = this.makeReplacementElement()
 		this.tokens[index] = replacement
-		this.el.innerHTML = ''
-		this.el.append(...this.tokens)
+		this.render()
 		const { left, top, height } = replacement.getBoundingClientRect()
 		const fallingLetter = new FallingLetter(letter, top, left, height)
 		this.falling.push(fallingLetter)
 	}
 
-	getHTML() {
-		return this.tokens.join('')
+	makeReplacementElement() {
+		const replacement = document.createElement('span')
+		replacement.innerHTML = '&nbsp;'
+		return replacement
+	}
+
+	render() {
+		this.el.innerHTML = ''
+		this.el.append(...this.tokens)
 	}
 }
