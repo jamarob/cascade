@@ -1,5 +1,6 @@
 export default class FallingLetter {
 	constructor(letter, top, left, height) {
+		this.finished = false
 		this.letter = letter
 		this.top = top
 		this.height = height
@@ -19,6 +20,8 @@ export default class FallingLetter {
 		if (this.top < window.innerHeight - this.height) {
 			this.top += top
 			this.el.style.top = this.top + 'px'
+		} else {
+			this.finished = true
 		}
 	}
 }

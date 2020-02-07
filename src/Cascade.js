@@ -28,6 +28,7 @@ export default class Cascade {
 		const inner = () => {
 			counter++ % 60 || (this.hasMore() && this.replaceNext())
 			this.falling.forEach(f => f.move(1))
+			this.falling = this.falling.filter(f => !f.finished)
 			window.requestAnimationFrame(inner)
 		}
 		inner()
