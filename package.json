@@ -1,0 +1,16 @@
+{
+  "name": "cascade",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html --open",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Jan Robert",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "parcel": "1.12.4"
+  }
+}
