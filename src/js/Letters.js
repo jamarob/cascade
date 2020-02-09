@@ -32,7 +32,7 @@ export class FixedLetter extends Letter {
 }
 
 export class CascadingLetter extends Letter {
-	constructor(letter, onClick) {
+	constructor(letter, parentCallback) {
 		super(letter.char)
 		const { top, left, height } = letter.boundingClientRect
 		this.top = top
@@ -42,14 +42,19 @@ export class CascadingLetter extends Letter {
 		this.element.style.left = left + 'px'
 		this.element.addEventListener(
 			'click',
-			() => {
-				document.body.removeChild(this.element)
-				letter.makeVisible()
-				onClick()
-			},
-			{ once: true }
+			() => this.onClick(letter, parentCallback),
+			{
+				once: true,
+			}
 		)
 		document.body.appendChild(this.element)
+	}
+
+	onClick(letter, parentCallback) {
+		document.body.removeChild(this.element)
+		letter.makeVisible()
+		parentCallback()
+		console.log(letter.char)
 	}
 
 	cascadeDown() {

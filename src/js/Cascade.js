@@ -14,7 +14,7 @@ export default class Cascade {
 	run() {
 		let counter = 0
 		const inner = () => {
-			counter++ % 60 || (this.hasMore() && this.replaceNext())
+			counter++ % 60 || this.replaceNext()
 			this.cascading.forEach(letter => letter.cascadeDown())
 			const bottom = window.innerHeight
 			this.cascading = this.cascading.filter(
@@ -30,6 +30,9 @@ export default class Cascade {
 	}
 
 	replaceNext() {
+		if (!this.hasMore()) {
+			return
+		}
 		const letter = this.replaceable.pop()
 		this.hideOriginalLetter(letter)
 		this.createFallingLetter(letter)
@@ -41,9 +44,16 @@ export default class Cascade {
 	}
 
 	createFallingLetter(letter) {
-		const index = this.cascading.length
-		const cascadingLetter = new CascadingLetter(letter, () => null)
+		const cascadingLetter = new CascadingLetter(letter, () => {
+			const index = this.cascading.length
+			this.removeFallingLetter(index)
+		})
 		this.cascading.push(cascadingLetter)
+	}
+
+	removeFallingLetter(index) {
+		this.cascading.splice(index, 1)
+		this.render()
 	}
 
 	render() {
