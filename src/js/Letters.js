@@ -25,10 +25,14 @@ export class FixedLetter extends Letter {
 	makeInvisible() {
 		this.element.innerHTML = WHITESPACE_ENTITY
 	}
+
+	makeVisible() {
+		this.element.innerHTML = this.char
+	}
 }
 
 export class CascadingLetter extends Letter {
-	constructor(letter) {
+	constructor(letter, onClick) {
 		super(letter.char)
 		const { top, left, height } = letter.boundingClientRect
 		this.top = top
@@ -36,6 +40,15 @@ export class CascadingLetter extends Letter {
 		this.element.style.position = 'absolute'
 		this.element.style.top = top + 'px'
 		this.element.style.left = left + 'px'
+		this.element.addEventListener(
+			'click',
+			() => {
+				document.body.removeChild(this.element)
+				letter.makeVisible()
+				onClick()
+			},
+			{ once: true }
+		)
 		document.body.appendChild(this.element)
 	}
 
