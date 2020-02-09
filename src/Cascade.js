@@ -1,18 +1,12 @@
 import FallingLetter from './FallingLetter'
+import shuffleArray from './util/shuffleArray'
 
 export default class Cascade {
 	constructor(el) {
 		this.el = el
 		this.tokens = el.textContent.replace(/\s/gi, ' ').split('')
 		this.replaceable = this.tokens.reduce(this.nonWhitespaceIndex, [])
-		const length = this.replaceable.length
-		for (let i = 0; i < length; i++) {
-			const r1 = Math.floor(Math.random() * length)
-			const r2 = Math.floor(Math.random() * length)
-			const temp = this.replaceable[r1]
-			this.replaceable[r1] = this.replaceable[r2]
-			this.replaceable[r2] = temp
-		}
+		shuffleArray(this.replaceable)
 		this.falling = []
 	}
 
