@@ -31,7 +31,7 @@ export class FixedLetter extends Letter {
 	}
 }
 
-export class CascadingLetter extends Letter {
+export class FallingLetter extends Letter {
 	constructor(letter, parentCallback) {
 		super(letter.char)
 		const { top, left, height } = letter.boundingClientRect

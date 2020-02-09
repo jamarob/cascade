@@ -1,5 +1,5 @@
 import shuffleArray from './util/shuffleArray'
-import { FixedLetter, CascadingLetter } from './Letters'
+import { FixedLetter, FallingLetter } from './Letters'
 
 export default class Cascade {
 	constructor(element) {
@@ -8,16 +8,16 @@ export default class Cascade {
 		this.letters = chars.map(char => new FixedLetter(char))
 		this.replaceable = this.letters.filter(letter => letter.isNotWhitespace())
 		shuffleArray(this.replaceable)
-		this.cascading = []
+		this.falling = []
 	}
 
 	run() {
 		let counter = 0
 		const inner = () => {
 			counter++ % 60 || this.replaceNext()
-			this.cascading.forEach(letter => letter.cascadeDown())
+			this.falling.forEach(letter => letter.cascadeDown())
 			const bottom = window.innerHeight
-			this.cascading = this.cascading.filter(
+			this.falling = this.falling.filter(
 				letter => !letter.hasReachedBottomAt(bottom)
 			)
 			window.requestAnimationFrame(inner)
@@ -44,15 +44,15 @@ export default class Cascade {
 	}
 
 	createFallingLetter(letter) {
-		const cascadingLetter = new CascadingLetter(letter, () => {
-			const index = this.cascading.length
+		const cascadingLetter = new FallingLetter(letter, () => {
+			const index = this.falling.length
 			this.removeFallingLetter(index)
 		})
-		this.cascading.push(cascadingLetter)
+		this.falling.push(cascadingLetter)
 	}
 
 	removeFallingLetter(index) {
-		this.cascading.splice(index, 1)
+		this.falling.splice(index, 1)
 		this.render()
 	}
 
