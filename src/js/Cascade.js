@@ -15,7 +15,7 @@ export default class Cascade {
 		let counter = 0
 		const inner = () => {
 			counter++ % 60 || (this.hasMore() && this.replaceNext())
-			this.cascading.forEach(letter => letter.cascadeDown())
+			counter % 1 || this.cascading.forEach(letter => letter.cascadeDown())
 			const bottom = window.innerHeight
 			this.cascading = this.cascading.filter(
 				letter => !letter.hasReachedBottomAt(bottom)

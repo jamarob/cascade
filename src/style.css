@@ -12,7 +12,21 @@ body {
 	height: 100vh;
 }
 
-button {
-	margin: 8px 0;
+header {
+	background: #333;
+	color: whitesmoke;
+	padding: 16px;
+}
+
+article {
+	margin-top: 16px;
+}
+
+.start-button {
+	margin-top: 16px;
 	font-size: inherit;
+}
+
+.cascade-text {
+	margin-top: 16px;
 }
