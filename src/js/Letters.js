@@ -54,7 +54,6 @@ export class FallingLetter extends Letter {
 		document.body.removeChild(this.element)
 		letter.makeVisible()
 		parentCallback()
-		console.log(letter.char)
 	}
 
 	cascadeDown() {
